@@ -1,0 +1,40 @@
+# Build output
+bin/
+obj/
+publish/
+
+# Local config (contains credentials)
+appsettings.local.json
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# .NET
+*.dll
+*.exe
+!publish/*.exe
+*.pdb
+*.nupkg
+*.snupkg
+
+# Logs
+*.log
+logs/
+
+# Temp files (used by print-svc during job processing)
+temp/
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
