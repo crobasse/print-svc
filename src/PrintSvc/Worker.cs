@@ -153,6 +153,31 @@ public class Worker : BackgroundService
         await channel.BasicAckAsync(deliveryTag: @event.DeliveryTag, multiple: false);
     }
 
+    internal static Result CreateErrorResult(string jobId, int printed, int total, string error)
+    {
+        return new Result
+        {
+            JobId = jobId,
+            Status = "error",
+            Printed = printed,
+            Total = total,
+            Error = error
+        };
+    }
+
+    private async Task PublishResultAsync(IChannel channel, Result result)
+    {
+        await channel.QueueDeclareAsync(queue: _broker.ResultsQueue,
+                             durable: true,
+                             exclusive: false,
+                             autoDelete: false,
+                             arguments: null,
+                             cancellationToken: default);
+
+        var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(result));
+        await channel.BasicPublishAsync("", _broker.ResultsQueue, body, cancellationToken: default);
+    }
+
     private void SendDownloadedPhotoToPrinter(JobPhoto photo)
     {
         string fileName = Path.GetFileName(photo.PhotoStorageKey);
