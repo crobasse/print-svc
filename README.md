@@ -52,7 +52,9 @@ Create an `appsettings.local.json` file at the root (not committed):
     "Endpoint": "localhost:9000",
     "AccessKey": "minioadmin",
     "SecretKey": "minioadmin",
-    "Bucket": "photos"
+    "Bucket": "photos",
+    "TempDirectory":  "./tmp/",
+    "UseSSL": false
   },
   "Printing": {
     "PrinterName": ""
@@ -89,9 +91,13 @@ sc start PrintSvc
 ```json
 {
   "jobId": "uuid",
-  "batchId": "uuid",
-  "photoStorageKey": "events/xxx/photo.jpg",
-  "copies": 2
+  "photos": [
+    {
+      "photoStorageKey": "string",
+      "copies": 1
+    }
+  ],
+  "startFromIndex": 0
 }
 ```
 
@@ -100,8 +106,10 @@ sc start PrintSvc
 ```json
 {
   "jobId": "uuid",
-  "status": "printing | waiting_validation | failed",
-  "errorMessage": null
+  "status": "queued|printing|requeued|done|error",
+  "printed": 123,
+  "total": 456,
+  "error": "string|null"
 }
 ```
 
